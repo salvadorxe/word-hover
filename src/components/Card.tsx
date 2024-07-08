@@ -28,16 +28,20 @@ function Card({
         left: left,
         top: top,
         right: right,
-        transform: `rotate(${rotate}deg) scale(0.8) `,
-        transformOrigin: "center bottom",
+        transformOrigin: "center center",
       }}
-      custom={index} // Pass index to custom
+      custom={index}
       initial="hidden"
       animate="show"
       exit="hidden"
-      variants={variants} // Use passed variants
+      variants={variants}
     >
-      <div className="imgCard">
+      <div
+        className="imgCard"
+        style={{
+          transform: `rotate(${rotate}deg) scale(0.8)`,
+        }}
+      >
         <img src={src} alt={alt} />
       </div>
     </motion.div>
