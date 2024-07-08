@@ -1,0 +1,57 @@
+/* app.css */
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #FFFDFA;
+  color: #656565;
+}
+
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#title {
+  width: 100%;
+  margin: 0 auto;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.line1, .line2 {
+  display: block;
+  width: 100%; 
+}
+
+.read-the-docs {
+  margin-top: 1rem;
+}
+
+.emoji{
+  color: #656565;
+  font-size: 48px;
+  margin-bottom: 50px;
+}
+
+.imgCard{
+  width: 95px;
+  height: 95px;
+  border-radius: 1.05rem;
+  overflow: hidden;
+}
+
+.imgCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
