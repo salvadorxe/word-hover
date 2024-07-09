@@ -1,18 +1,19 @@
 import { motion, Variants } from "framer-motion";
 
-interface ImageProps {
-  src: string;
+interface CardProps {
+  content: string;
   alt: string;
   left?: string;
   top?: string;
   right?: string;
   rotate: number;
-  index: number; // Add index prop
-  variants: Variants; // Add variants prop
+  index: number;
+  variants: Variants;
+  isEmoji: boolean;
 }
 
 function Card({
-  src,
+  content,
   alt,
   left,
   top,
@@ -20,7 +21,8 @@ function Card({
   rotate,
   index,
   variants,
-}: ImageProps) {
+  isEmoji,
+}: CardProps) {
   return (
     <motion.div
       style={{
@@ -42,7 +44,13 @@ function Card({
           transform: `rotate(${rotate}deg) scale(0.8)`,
         }}
       >
-        <img src={src} alt={alt} />
+        {isEmoji ? (
+          <span className="emoji" role="img" aria-label={alt}>
+            {content}
+          </span>
+        ) : (
+          <img src={content} alt={alt} />
+        )}
       </div>
     </motion.div>
   );

@@ -1,14 +1,21 @@
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useCallback } from "preact/hooks";
 import "./app.css";
 
 import Card from "./components/Card";
-import { foodImages, sightImages } from "./ImageData";
+import { foodImages, sightImages, nightEmojis } from "./ImageData";
 import HoverableWord from "./components/HoverableWord";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 
+type HoverState = {
+  isHovering: boolean;
+  category: string | null;
+};
+
 export function App() {
-  const [category, setCategory] = useState<string | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [hoverState, setHoverState] = useState<HoverState>({
+    isHovering: false,
+    category: null,
+  });
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -36,32 +43,43 @@ export function App() {
     exit: { opacity: 0, scale: 0.8 },
   };
 
-  const handleHover = (newCategory: string) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCategory(newCategory);
-  };
+  const handleHover = useCallback((category: string) => {
+    setHoverState({ isHovering: true, category });
+  }, []);
 
-  const handleMouseLeave = () => {
-    setCategory(null);
-  };
+  const handleMouseLeave = useCallback(() => {
+    setHoverState({ isHovering: false, category: null });
+  }, []);
 
   const getImagesToDisplay = () => {
-    switch (category) {
+    switch (hoverState.category) {
       case "food":
         return foodImages;
       case "sights":
         return sightImages;
+      case "nightlife":
+        return nightEmojis;
       default:
         return [];
     }
   };
 
+  // useEffect(() => {
+  //   const imagesToPreload = [...foodImages, ...sightImages, ...nightEmojis];
+  //   imagesToPreload.forEach((image) => {
+  //     if (image.src.startsWith("http")) {
+  //       // Only preload actual images, not emoji strings
+  //       const img = new Image();
+  //       img.src = image.src;
+  //     }
+  //   });
+  // }, []);
+
   return (
     <>
       <div className="content">
         <div className="logo">
-          <i className="fa-solid fa-earth-americas emoji"></i>
+          <i className="fa-solid fa-earth-americas icon"></i>
         </div>
         <div className="heading">
           <h1 id="title">
@@ -81,7 +99,7 @@ export function App() {
               ,{" "}
               <span
                 onMouseEnter={() => handleHover("sights")}
-                onMouseLeave={() => setCategory(null)}
+                onMouseLeave={handleMouseLeave}
                 className="hoverable"
               >
                 <HoverableWord
@@ -94,11 +112,17 @@ export function App() {
             </span>
             <span className="line2">
               {" "}
-              <HoverableWord
-                text="night-life"
-                color="#9b9b9b"
-                hoverColor="#E136C6"
-              />
+              <span
+                onMouseEnter={() => handleHover("nightlife")}
+                onMouseLeave={handleMouseLeave}
+                className="hoverable"
+              >
+                <HoverableWord
+                  text="night-life"
+                  color="#9b9b9b"
+                  hoverColor="#E136C6"
+                />
+              </span>
               , and more.
             </span>
           </h1>
@@ -108,32 +132,28 @@ export function App() {
           <input type="text" placeholder="Search for new destinations" />
         </div>
 
-        <AnimatePresence
-          mode="wait"
-          onExitComplete={() => setIsAnimating(false)}
-          initial={false}
-        >
-          {category !== null && (
+        <AnimatePresence mode="wait" initial={false}>
+          {hoverState.isHovering && hoverState.category && (
             <motion.div
-              key={category}
+              key={hoverState.category}
               variants={containerVariants}
               initial="hidden"
               animate="show"
               exit="hidden"
-              onAnimationComplete={() => setIsAnimating(false)}
               transition={{ duration: 0.2 }}
             >
-              {getImagesToDisplay().map((image, index) => (
+              {getImagesToDisplay().map((item, index) => (
                 <Card
-                  key={index}
+                  key={`${hoverState.category}-${index}`}
                   index={index}
-                  src={image.src}
-                  alt={`${image.category} Image ${index + 1}`}
-                  left={image.left}
-                  top={image.top}
-                  right={image.right}
-                  rotate={image.rotate}
+                  content={item.src}
+                  alt={`${item.category} Image ${index + 1}`}
+                  left={item.left}
+                  top={item.top}
+                  right={item.right}
+                  rotate={item.rotate}
                   variants={cardVariants}
+                  isEmoji={item.category === "nightlife"}
                 />
               ))}
             </motion.div>

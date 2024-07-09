@@ -87,3 +87,42 @@ export interface ImageData {
       rotate: 6,
     }
   ];
+
+  export const nightEmojis: ImageData[] = [
+    {
+      id: 1,
+      src: "💎",
+      alt: "Diamond",
+      category: "nightlife",
+      top: "23%",
+      left: "20%",
+      rotate: -8,
+    },
+    {
+      id: 2,
+      src: "🪩",
+      top: "25%",
+      right: "20%",
+      alt: "Mirror ball",
+      category: "nightlife",
+      rotate: 5,
+    },
+    {
+      id: 3,
+      src: "🎱",
+      alt: "Billiards ball",
+      category: "nightlife",
+      top: "63%",
+      left: "18%",
+      rotate: -8,
+    },
+    {
+      id: 4,
+      src: "💫",
+      alt: "Shooting Star",
+      category: "nightlife",
+      top: "62%",
+      right: "15%",
+      rotate: 6,
+    }
+  ];
