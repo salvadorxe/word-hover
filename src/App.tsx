@@ -103,6 +103,10 @@ export function App() {
             </span>
           </h1>
         </div>
+        <div className="search">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search for new destinations" />
+        </div>
 
         <AnimatePresence
           mode="wait"
